@@ -4,6 +4,7 @@ namespace SimpleDIManager.DI
     public enum Lifetime
     {
         Singleton,
-        Transient
+        Transient, 
+        Scopped
     }
 }
