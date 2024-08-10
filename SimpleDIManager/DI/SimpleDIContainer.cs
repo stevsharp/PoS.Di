@@ -13,6 +13,11 @@ namespace SimpleDIManager.DI
             _registrations[typeof(TService)] = (typeof(TImplementation), lifetime, Thread.CurrentThread.ManagedThreadId);
         }
 
+        public void Register(Type serviceType, Type implementationType, Lifetime lifetime = Lifetime.Transient)
+        {
+            //_registrations[serviceType] = (implementationType, lifetime);
+        }
+
         public TService Resolve<TService>()
         {
             return (TService)ResolveType(typeof(TService));

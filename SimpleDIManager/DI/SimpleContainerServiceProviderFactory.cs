@@ -1,16 +1,45 @@
 ﻿
-namespace SimpleDIManager.DI
+
+namespace SimpleDIManager.DI;
+
+public class SimpleContainerServiceProviderFactory : IServiceProviderFactory<ISimpleDIContainer>
 {
-    public class SimpleContainerServiceProviderFactory : IServiceProviderFactory<SimpleDIProvider>
+    public ISimpleDIContainer CreateBuilder(IServiceCollection services)
     {
-        public SimpleDIProvider CreateBuilder(IServiceCollection services)
+        var provider = new SimpleDIContainer();
+
+        foreach (var service in services)
         {
-            throw new NotImplementedException();
+            if (service.ImplementationType != null)
+            {
+                Lifetime lifetime = Lifetime.Transient;
+
+                switch (service.Lifetime)
+                {
+                    case ServiceLifetime.Singleton:
+                        lifetime = Lifetime.Singleton;
+                        break;
+                    case ServiceLifetime.Scoped:
+                        lifetime = Lifetime.Scopped;
+                        break;
+                    case ServiceLifetime.Transient:
+                        lifetime = Lifetime.Transient;
+                        break;
+                    default:
+                        break;
+                }
+
+                provider.Register(service.ServiceType, service.ImplementationType, lifetime);
+
+            }
         }
 
-        public IServiceProvider CreateServiceProvider(SimpleDIProvider containerBuilder)
-        {
-            throw new NotImplementedException();
-        }
+
+        return provider;
+    }
+
+    public IServiceProvider CreateServiceProvider(ISimpleDIContainer containerBuilder)
+    {
+        return new SimpleDIProvider(containerBuilder);
     }
 }

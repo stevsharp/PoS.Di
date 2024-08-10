@@ -5,6 +5,7 @@ namespace SimpleDIManager.DI
     {
         Singleton,
         Transient, 
-        Scopped
+        Scopped,
+        None
     }
 }

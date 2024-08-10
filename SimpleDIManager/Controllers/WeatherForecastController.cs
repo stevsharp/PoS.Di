@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
+using SimpleDIManager.Services;
+
 namespace SimpleDIManager.Controllers
 {
     [ApiController]
@@ -13,10 +15,17 @@ namespace SimpleDIManager.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly IService _service;
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger , 
+            IService service)
         {
             _logger = logger;
+
+            _service = service;
         }
+
+
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
