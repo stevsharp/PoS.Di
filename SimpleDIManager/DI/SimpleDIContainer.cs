@@ -15,7 +15,7 @@ namespace SimpleDIManager.DI
 
         public void Register(Type serviceType, Type implementationType, Lifetime lifetime = Lifetime.Transient)
         {
-            //_registrations[serviceType] = (implementationType, lifetime);
+            _registrations[serviceType] = (implementationType, lifetime, Thread.CurrentThread.ManagedThreadId);
         }
 
         public TService Resolve<TService>()
@@ -23,7 +23,7 @@ namespace SimpleDIManager.DI
             return (TService)ResolveType(typeof(TService));
         }
 
-        private object ResolveType(Type service)
+        public object ResolveType(Type service)
         {
             ArgumentNullException.ThrowIfNull(service);
 

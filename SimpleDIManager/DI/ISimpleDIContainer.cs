@@ -7,4 +7,5 @@ namespace SimpleDIManager.DI;
     {
         void Register<TService, TImplementation>(Lifetime lifetime = Lifetime.Transient) where TImplementation : TService;
         TService Resolve<TService>();
+        object ResolveType(Type service);
     }
