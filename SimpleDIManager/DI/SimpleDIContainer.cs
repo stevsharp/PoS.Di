@@ -32,10 +32,19 @@ namespace SimpleDIManager.DI
                 switch (lifetime)
                 {
                     case Lifetime.Singleton:
-                        break;
+                        
+                        if (!_singletonCollection.ContainsKey(service))
+                        {
+                            _singletonCollection[service] = CreateType(implementationType);
+                        }
+                        return _singletonCollection[service];
+
                     case Lifetime.Transient:
-                        break;
+
+                        return CreateType(implementationType);  
+
                     case Lifetime.Scopped:
+
                         break;
                 }
             }
