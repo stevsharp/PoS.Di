@@ -1,0 +1,6 @@
+@SimpleDIManager_HostAddress = http://localhost:5091
+
+GET {{SimpleDIManager_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
