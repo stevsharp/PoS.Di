@@ -1,10 +1,12 @@
+
 using SimpleDIManager.DI;
 using SimpleDIManager.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var factory = new SimpleContainerServiceProviderFactory();
 // Add services to the container.
-builder.Host.UseServiceProviderFactory(new SimpleContainerServiceProviderFactory());
+builder.Host.UseServiceProviderFactory(factory);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,7 +20,10 @@ builder.Host.ConfigureContainer<ISimpleDIContainer>(c =>
     c.Register<IService, Service>(Lifetime.Transient);
 });
 
+
 var app = builder.Build();
+
+factory.SetFallbackServiceProvider(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

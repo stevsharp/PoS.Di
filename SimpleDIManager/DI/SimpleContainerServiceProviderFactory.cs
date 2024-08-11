@@ -4,6 +4,8 @@ namespace SimpleDIManager.DI;
 
 public class SimpleContainerServiceProviderFactory : IServiceProviderFactory<ISimpleDIContainer>
 {
+    private IServiceProvider? _serviceProvider;
+
     public ISimpleDIContainer CreateBuilder(IServiceCollection services)
     {
         var provider = new SimpleDIContainer();
@@ -40,6 +42,16 @@ public class SimpleContainerServiceProviderFactory : IServiceProviderFactory<ISi
 
     public IServiceProvider CreateServiceProvider(ISimpleDIContainer containerBuilder)
     {
+        if (_serviceProvider != null)
+        {
+            containerBuilder.SetFallbackServiceProvider(_serviceProvider);
+        }
         return new SimpleDIProvider(containerBuilder);
+    }
+
+
+    public void SetFallbackServiceProvider(IServiceProvider provider)
+    {
+        _serviceProvider = provider;
     }
 }

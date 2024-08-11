@@ -8,6 +8,12 @@ namespace SimpleDIManager.DI
 
         private readonly Dictionary<Type, object> _singletonCollection = new();
 
+        private IServiceProvider? _serviceProvider;
+
+        //public SimpleDIContainer(IServiceProvider serviceProvider)
+        //{
+        //    _serviceProvider = serviceProvider;
+        //}
         public void Register<TService, TImplementation>(Lifetime lifetime = Lifetime.Transient) where TImplementation : TService
         {
             _registrations[typeof(TService)] = (typeof(TImplementation), lifetime, Thread.CurrentThread.ManagedThreadId);
@@ -54,8 +60,18 @@ namespace SimpleDIManager.DI
                 }
             }
 
+            if (_serviceProvider == null)
+            {
+                throw new InvalidOperationException("Fallback service provider is not available yet.");
+            }
 
-            throw new InvalidOperationException($"Service of type {service.Name} is not registered.");
+            return _serviceProvider.GetService(service)
+                      ?? throw new InvalidOperationException($"Service of type {service.Name} is not registered.");
+        }
+
+        public void SetFallbackServiceProvider(IServiceProvider provider)
+        {
+            
         }
 
         private object CreateType(Type service)
