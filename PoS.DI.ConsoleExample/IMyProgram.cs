@@ -2,3 +2,8 @@
 {
     void Run();
 }
+
+public interface IHelloWorldService
+{
+    void Run();
+}

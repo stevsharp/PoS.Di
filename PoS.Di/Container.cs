@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Threading;
 
 namespace PoS.Di
 {
@@ -16,7 +14,7 @@ namespace PoS.Di
             var id = ServiceDescriptorId.Create(serviceType);
 
             var registration = new ServiceDescriptor(id, implementationType, lifetime);
-            
+
             _services[id] = registration;
         }
 
@@ -58,6 +56,22 @@ namespace PoS.Di
                     _singletonCollection[registrationID] = CreateType(registration.Implementation);
 
                 return _singletonCollection[registrationID] as TService;
+            }
+
+            if (registration.IsTransient)
+            {
+                if (_services.ContainsKey(registrationID))
+                {
+                    return CreateType(registration.Implementation) as TService;
+                }
+
+                throw new InvalidOperationException($"Not Valid Implementation {registration.Implementation}");
+                
+            }
+
+            if (registration.IsScopped)
+            {
+
             }
 
             return CreateType(registration.Implementation) as TService;
