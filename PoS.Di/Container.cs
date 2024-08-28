@@ -14,12 +14,9 @@ namespace PoS.Di
         private void Register(Type serviceType, Type implementationType, Lifetime lifetime = Lifetime.Transient)
         {
             var id = ServiceDescriptorId.Create(serviceType);
-            var registration = new ServiceDescriptor
-            {
-                Service = id,
-                Implementation = implementationType,
-                Lifetime = lifetime
-            };
+
+            var registration = new ServiceDescriptor(id, implementationType, lifetime);
+            
             _services[id] = registration;
         }
 
@@ -31,6 +28,16 @@ namespace PoS.Di
         public void AddTransient<TService, TImplementation>() where TImplementation : class, TService
         {
             Register(typeof(TService), typeof(TImplementation), Lifetime.Transient);
+        }
+
+        public void AddScopped<TService, TImplementation>() where TImplementation : class, TService
+        {
+            Register(typeof(TService), typeof(TImplementation), Lifetime.Scopped);
+        }
+
+        public void AddSingelton<TService, TImplementation>() where TImplementation : class, TService
+        {
+            Register(typeof(TService), typeof(TImplementation), Lifetime.Singleton);
         }
 
 

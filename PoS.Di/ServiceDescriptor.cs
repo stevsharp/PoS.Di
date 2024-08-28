@@ -1,25 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PoS.Di
+namespace PoS.Di;
+
+public class ServiceDescriptor
 {
-    public class ServiceDescriptor
+    public ServiceDescriptorId Service { get;  }
+    public Type Implementation { get;  }
+    public Lifetime Lifetime { get; }
+
+    public bool IsSingleton => Lifetime == Lifetime.Singleton;
+
+    public bool IsScopped => Lifetime == Lifetime.Scopped;
+
+    public bool IsTransient => Lifetime == Lifetime.Transient;
+
+    public ServiceDescriptor(ServiceDescriptorId Service, Type Implementation, Lifetime Lifetime)
     {
-        public ServiceDescriptorId Service { get; set; }
-        public Type Implementation { get; set; }
-        public Lifetime Lifetime { get; set; }
+        this.Service = Service;
+        this.Implementation = Implementation;   
+        this.Lifetime = Lifetime;
+    }
 
-        public bool IsSingleton => Lifetime == Lifetime.Singleton;
+    public override bool Equals(object obj)
+    {
+        return obj is ServiceDescriptor descriptor &&
+               EqualityComparer<Type>.Default.Equals(Service.ID, descriptor.Service.ID);
+    }
 
-        public override bool Equals(object obj)
-        {
-            return obj is ServiceDescriptor descriptor &&
-                   EqualityComparer<Type>.Default.Equals(Service.ID, descriptor.Service.ID);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Service);
-        }
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Service);
     }
 }

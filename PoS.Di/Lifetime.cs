@@ -1,10 +1,9 @@
-﻿namespace PoS.Di
+﻿namespace PoS.Di;
+
+public enum Lifetime
 {
-    public enum Lifetime
-    {
-        Singleton,
-        Transient,
-        Scopped,
-        None
-    }
+    Singleton,
+    Transient,
+    Scopped,
+    None
 }

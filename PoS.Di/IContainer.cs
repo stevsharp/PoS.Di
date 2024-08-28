@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace PoS.Di
+namespace PoS.Di;
+
+public interface IContainer : IDisposable
 {
-    public interface IContainer : IDisposable
-    {
-        void AddTransient<TService, TImplementation>() where TImplementation : class, TService;
-        TService GetService<TService>() where TService : class;
-    }
+    void AddTransient<TService, TImplementation>() where TImplementation : class, TService;
+    TService GetService<TService>() where TService : class;
 }
