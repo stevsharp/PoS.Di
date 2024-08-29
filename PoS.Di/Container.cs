@@ -56,7 +56,7 @@ public class Container : IContainer
 
             if (arguments.Any())
             {
-                List<object?> trace = new(arguments.Count());
+                List<object> trace = new(arguments.Count());
 
                 foreach (var argument in arguments)
                 {
@@ -65,18 +65,13 @@ public class Container : IContainer
 
                     if (_services.ContainsKey(ServiceDescriptorId.Create(type)))
                     {
-                        instanceParam = _services[ServiceDescriptorId.Create(type)].Service;
+                        instanceParam = _services[ServiceDescriptorId.Create(type)].Implementation;
 
-                        var isNull = instanceParam == null;
-
-                        trace.Add(argument);
+                        trace.Add(Activator.CreateInstance((Type)instanceParam));
                     }
                 }
 
                 instance = Activator.CreateInstance(service, trace.ToArray());
-
-
-                //instance = Activator.CreateInstance(service, arguments);
 
                 return instance;
             }
