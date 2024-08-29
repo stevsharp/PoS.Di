@@ -6,7 +6,7 @@ namespace PoS.Di;
 public class ServiceDescriptor
 {
     public ServiceDescriptorId Service { get;  }
-    public Type Implementation { get;  }
+    public object Implementation { get;  }
     public Lifetime Lifetime { get; }
 
     public bool IsSingleton => Lifetime == Lifetime.Singleton;
@@ -15,7 +15,7 @@ public class ServiceDescriptor
 
     public bool IsTransient => Lifetime == Lifetime.Transient;
 
-    public ServiceDescriptor(ServiceDescriptorId Service, Type Implementation, Lifetime Lifetime)
+    public ServiceDescriptor(ServiceDescriptorId Service, object Implementation, Lifetime Lifetime)
     {
         this.Service = Service;
         this.Implementation = Implementation;   
